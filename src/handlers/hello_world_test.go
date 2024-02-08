@@ -14,13 +14,13 @@ func expectedButGot(expected, got string) string {
 func TestHelloWorldHandler (t *testing.T) {
 	result := handlers.HelloWorldHandler()
 
-	if (result != "Hello, World") {
+	if (result != "Hello, World!") {
 		t.Errorf("Handler returned wrong value");
 	}
 }
 
 func TestHelloToHandler (t *testing.T) {
-	expected:="Hello, Stephen!"
+	expected:="Hello, Stephen"
 	result := handlers.HelloToHandler("Stephen")
 
 	if (result != expected) {
