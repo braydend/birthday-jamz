@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+
 	"github.com/braydend/birthday-jamz/src/handlers"
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,7 +26,13 @@ func main() {
 			return fiber.NewError(fiber.ErrBadRequest.Code, err.Error())
 		}
 
-		return c.SendString(playlist)
+		marshalledPlaylist, err := json.Marshal(playlist)
+
+		if (err != nil) {
+			return fiber.NewError(fiber.ErrInternalServerError.Code, err.Error())
+		}
+
+		return c.SendString(string(marshalledPlaylist))
 	})
 
 	app.Get("/:name", func(c *fiber.Ctx) error {

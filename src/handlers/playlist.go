@@ -7,6 +7,11 @@ import (
 	"github.com/braydend/birthday-jamz/src/api"
 )
 
+type PlaylistResponse struct {
+    Date string `json:"date"`
+    Songs []api.Song `json:"playlist"`
+}
+
 func formatDate(dateParam string) (string, error) {
     // Parse the date string into a time.Time object
     parsedDate, err := time.Parse(time.DateOnly, dateParam)
@@ -20,18 +25,23 @@ func formatDate(dateParam string) (string, error) {
 }
 
 
-func BuildPlaylistHandler(birthday string) (string, error) {
+func BuildPlaylistHandler(birthday string) (PlaylistResponse, error) {
 	parsedDate, err := formatDate(birthday);
 
 	if (err != nil) {
-		return "", fmt.Errorf("unable to parse date")
+		return PlaylistResponse{}, fmt.Errorf("unable to parse date")
 	}
 
     topSong, err := api.GetTopSongForDate(parsedDate)
 
     if (err != nil) {
-		return "", err
+		return PlaylistResponse{}, err
 	}
 
-	return fmt.Sprintf("top song on %s is %s", parsedDate, topSong.Title), nil
+    resp := PlaylistResponse{
+        Date: parsedDate,
+        Songs: []api.Song{topSong},
+    }
+
+    return resp, err
 }
