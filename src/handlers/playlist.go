@@ -3,6 +3,8 @@ package handlers
 import (
 	"fmt"
 	"time"
+
+	"github.com/braydend/birthday-jamz/src/api"
 )
 
 func formatDate(dateParam string) (string, error) {
@@ -25,5 +27,11 @@ func BuildPlaylistHandler(birthday string) (string, error) {
 		return "", fmt.Errorf("unable to parse date")
 	}
 
-	return fmt.Sprintf("I would build a date starting on %s", parsedDate), nil
+    topSong, err := api.GetTopSongForDate(parsedDate)
+
+    if (err != nil) {
+		return "", err
+	}
+
+	return fmt.Sprintf("top song on %s is %s", parsedDate, topSong.Title), nil
 }
