@@ -1,6 +1,6 @@
 # birthday-jamz
 
-An API to generate playlists from Billboard rankings for a given birthday.
+An API built with [Go Fiber](https://docs.gofiber.io/) to generate playlists from Billboard rankings for a given birthday.
 
 ## Running the app
 1. Install Go 1.21.4 or higher
