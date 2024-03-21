@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -13,19 +14,12 @@ type Song struct {
 }
 
 type BillboardResponse struct {
-	Songs []Song `json:"content"`
+	Songs map[string]Song `json:"content"`
 }
-// func (c *Client) Get(url string) (resp *Response, err error) {
-// 	req, err := NewRequest("GET", url, nil)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return c.Do(req)
-// }
 
-func GetTopSongForDate() (Song, error){
-	req, err := http.NewRequest("GET", "https://billboard-api2.p.rapidapi.com/hot-100?date=2019-05-11&range=1-1", nil)
-	// resp, err := http.Get("https://billboard-api2.p.rapidapi.com/hot-100?date=2019-05-11&range=1-1")
+func GetTopSongForDate(dateString string) (Song, error){
+	urlWithDate := fmt.Sprintf("https://billboard-api2.p.rapidapi.com/hot-100?date=%s&range=1-1", dateString);
+	req, err := http.NewRequest("GET", urlWithDate, nil)
 
 	if (err != nil) {
 		return Song{}, err
@@ -45,6 +39,7 @@ func GetTopSongForDate() (Song, error){
 	body, err := io.ReadAll(resp.Body)
 
 	if (err != nil) {
+		log.Print(err)
 		return Song{}, err
 	}
 
@@ -53,8 +48,9 @@ func GetTopSongForDate() (Song, error){
 	err = json.Unmarshal(body, &billboardResponse)
 
 	if (err != nil) {
+		log.Print(err)
 		return Song{}, fmt.Errorf("failed to unmarshal JSON: %s", err)
 	}
 
-	return billboardResponse.Songs[0], nil;
+	return billboardResponse.Songs["1"], nil;
 }
