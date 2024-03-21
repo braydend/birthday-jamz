@@ -9,7 +9,7 @@ import (
 
 type PlaylistResponse struct {
     Date string `json:"date"`
-    Songs []api.Song `json:"playlist"`
+    Songs map[string]api.Song `json:"playlist"`
 }
 
 func formatDate(dateParam string) (string, error) {
@@ -40,7 +40,7 @@ func BuildPlaylistHandler(birthday string) (PlaylistResponse, error) {
 
     resp := PlaylistResponse{
         Date: parsedDate,
-        Songs: []api.Song{topSong},
+        Songs: map[string]api.Song{"foo":topSong},
     }
 
     return resp, err
