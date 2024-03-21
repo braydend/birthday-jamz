@@ -9,11 +9,17 @@ import (
 )
 
 func TestPlaylistHandlerTakesValidDate (t *testing.T) {
-	result, err := handlers.BuildPlaylistHandler("1989-01-19");
+	result, _ := handlers.BuildPlaylistHandler("2020-01-19");
+	expected:=handlers.PlaylistResponse{Date: "2020-01-19", Songs: map[string]api.Song{
+		"2020-01-19": {Title: "Old Town Road", Artist:  "Lil Nas X Featuring Billy Ray Cyrus"},
+		"2021-01-19": {Title: "Old Town Road", Artist:  "Lil Nas X Featuring Billy Ray Cyrus"},
+		"2022-01-19": {Title: "Old Town Road", Artist:  "Lil Nas X Featuring Billy Ray Cyrus"},
+		"2023-01-19": {Title: "Old Town Road", Artist:  "Lil Nas X Featuring Billy Ray Cyrus"},
+		"2024-01-19": {Title: "Old Town Road", Artist:  "Lil Nas X Featuring Billy Ray Cyrus"},
+	}}
 
-	if (reflect.DeepEqual(result, handlers.PlaylistResponse{Date: "1989-01-19", Songs: []api.Song{}})) {
-		t.Logf(err.Error())
-		t.Errorf("Handler returned wrong value");
+	if (!reflect.DeepEqual(result, expected)) {
+		t.Errorf("Handler returned wrong value.\nExpected: %v\nGot: %v", expected, result);
 	}
 }
 

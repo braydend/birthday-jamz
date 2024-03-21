@@ -17,8 +17,13 @@ type BillboardResponse struct {
 	Songs map[string]Song `json:"content"`
 }
 
+// TODO: Make this cleaner. This is good enoughf or testing so we dont exceed the 30 req/month quota
+const BASE_URL = "https://billboard-api2.p.rapidapi.com/hot-100?date=%s&range=1-1";
+const STUB_URL = "https://gist.githubusercontent.com/braydend/561312748fec29d78203949e21c49402/raw/623fce242a8e0a2e0f587ea9695fe72b4925e3e5/stub.json"
+
 func GetTopSongForDate(dateString string) (Song, error){
-	urlWithDate := fmt.Sprintf("https://billboard-api2.p.rapidapi.com/hot-100?date=%s&range=1-1", dateString);
+	// urlWithDate := fmt.Sprintf(BASE_URL, dateString);
+	urlWithDate := STUB_URL
 	req, err := http.NewRequest("GET", urlWithDate, nil)
 
 	if (err != nil) {
